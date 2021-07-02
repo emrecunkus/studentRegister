@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Picker } from 'react-native';
-import { Button, Card, CardSection } from '../ortak';
+import { connect } from 'react-redux';
+import { Button, Card, CardSection ,Spinner} from '../ortak';
+import { studentChange ,studentCreate} from '../actions/StudentListActions';
 
 class StudentCreate extends Component {
 
     clickSave() {
+        const {
+            isim,
+            soyisim,
+            ogrencinumara,
+            sube
+        } = this.props;
+        this.props.studentCreate({isim, soyisim, ogrencinumara, sube });
 
     }
+    renderButton() {
+        if (!this.props.loading) {
+          return     <Button onPress={this.clickSave.bind(this)}> KAYDET </Button>
+        }
+        return <Spinner size="small" />;
+      }
     render() {
         const { inputStyle } = styles;
         return (
@@ -16,7 +31,7 @@ class StudentCreate extends Component {
                         placeholder="İsim"
                         style={inputStyle}
                         value={this.props.isim}
-                        onChangeText={isim => this.props.studentChange(isim)}
+                        onChangeText={isim => this.props.studentChange({ props: 'isim', value: isim })}
                     />
                 </CardSection>
 
@@ -25,7 +40,7 @@ class StudentCreate extends Component {
                         placeholder="Soyisim"
                         style={inputStyle}
                         value={this.props.soyisim}
-                        onChangeText={soyisim => this.props.studentChange(soyisim)}
+                        onChangeText={soyisim => this.props.studentChange({ props: 'soyisim', value: soyisim })}
                     />
                 </CardSection>
 
@@ -34,16 +49,16 @@ class StudentCreate extends Component {
                         placeholder="Öğrenci Numarası"
                         style={inputStyle}
                         value={this.props.ogrencinumara}
-                        onChangeText={ogrencinumara => this.props.studentChange(ogrencinumara)}
+                        onChangeText={ogrencinumara => this.props.studentChange({ props: 'ogrencinumara', value: ogrencinumara })}
                     />
                 </CardSection>
 
                 <CardSection>
-                <Text>Şube</Text>
+                    <Text>Şube</Text>
                     <Picker
                         style={{ flex: 1 }}
                         selectedValue={this.props.sube}
-                        onValueChange={sube => this.props.studentChange(sube)}
+                        onValueChange={sube => this.props.studentChange({ props: 'sube', value: sube })}
                     >
                         <Picker.Item label="A şubesi" value="asube" />
                         <Picker.Item label="B şubesi" value="bsube" />
@@ -56,7 +71,7 @@ class StudentCreate extends Component {
                 </CardSection>
 
                 <CardSection>
-                    <Button onPress={this.clickSave.bind(this)}> KAYDET </Button>
+                {this.renderButton()}
                 </CardSection>
             </View>
 
@@ -72,5 +87,23 @@ const styles = {
         flex: 1
     },
 };
+const mapToStateProps = ({ studentListResponse }) => {
+    const {
+        isim,
+        soyisim,
+        ogrencinumara,
+        sube,
+        loading
+    } = studentListResponse;
 
-export default StudentCreate;
+    return {
+        isim,
+        soyisim,
+        ogrencinumara,
+        sube,
+        loading
+    };
+
+}
+
+export default connect(mapToStateProps, { studentChange ,studentCreate})(StudentCreate);
