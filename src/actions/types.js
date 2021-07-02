@@ -3,3 +3,7 @@ export const PASSWORD_CHANGED = 'password_changed';
 export const LOGIN_USER = 'login_user';
 export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL = 'login_user_fail';
+export const STUDENT_CHANGE= 'student_change';
+export const CREATE_REQUEST = 'create_rewuest';
+export const CREATE_REQUEST_SUCCESS= 'create_request_success';
+export const STUDENT_LIST_DATA_SUCCESS = 'student_list_data_success';

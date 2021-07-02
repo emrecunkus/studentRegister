@@ -60,17 +60,8 @@ const loginFail = (dispatch) => {
         type: LOGIN_USER_FAIL,  
         
     });
-    
-    if( LOGIN_USER_FAIL ){
-        console.log(`HATALI GİRİŞ`);
-        Alert.alert(
-        'Mesaj',
-        'Kullanıcı Adı veya Şifre Hatalı !!',
-        [
-            { text: 'Tamam', onPress: () => null }
-        ]
-        );
-    }
+       
+     
 };
 const loginSucces = (dispatch, user) => {
     dispatch({

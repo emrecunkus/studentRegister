@@ -1,46 +1,41 @@
 import React from 'react';
+import { Scene, Router, Actions ,Stack} from 'react-native-router-flux';
 
-import { Scene, Router, Actions } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
-import StudentCreate from './components/StudentCreate';
 import StudentsList from './components/StudentsList';
 
+import StudentCreate from './components/StudentCreate';
 
 const RouterComponent = () => {
     return (
-        <Router sceneStyle={{ marginTop: 65 }}>
-            <Scene key="root" hideNavBar={true}>
-                <Scene key="main">
-                    <Scene
-                        onRight={() => Actions.studentcreate()}
-                        rightTitle="Ekle"
-                        key="studentsList"
-                        component={StudentsList}
-                        title="Ogrenci Liste" />
-                    <Scene
-
-                        key="studentcreate"
-                        component={StudentCreate}
-                        title="Ogrenciyi Kaydet"
-                    />
-
-
-
-                </Scene>
-
-
-
-
-
-
-                <Scene key="kimlik">
-                    <Scene key="loginScreen" component={LoginForm} title="GİRİŞ EKRANI" />
-                </Scene>
-
+  
+        <Router style={{ marginTop: 0 }}>
+        <Stack key = "root">
+            <Scene key="kimlik " hideNavBar={true}>
+                <Scene key="loginScreen" component={LoginForm} title="Giris Ekrani" hideNavBar={false} />
             </Scene>
-        </Router>
-    );
 
+            <Scene key="main" hideNavBar={true}>
+                <Scene
+                    onRight={() => Actions.studentCreate()}
+                    rightTitle="Yeni"
+                    key="studentsList"
+                    component={StudentsList}
+                    title="Öğrenci Liste"
+                    hideNavBar={false}
+                />
+                <Scene
+                    key="studentCreate"
+                    component={StudentCreate}
+                    title="Öğrenci Kaydet"
+                    hideNavBar={false}
+                />
+            </Scene>
+        </Stack>
+
+    </Router>
+    
+    );
 };
 
 export default RouterComponent;
