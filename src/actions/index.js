@@ -1,2 +1,2 @@
 export * from './kimlikdogrulamaactions';
-export * from './StudentListActions';
+export * from './StudentActions';

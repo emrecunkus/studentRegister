@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, Picker } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Card, CardSection ,Spinner} from '../ortak';
-import { studentChange ,studentCreate} from '../actions/StudentListActions';
 
+import { studentChange,studentCreate } from '../actions/StudentActions';
 class StudentCreate extends Component {
 
     clickSave() {
