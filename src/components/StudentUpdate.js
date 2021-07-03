@@ -3,22 +3,47 @@ import { View, Text, TextInput, Picker } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Card, CardSection ,Spinner} from '../ortak';
 
-import { studentChange,studentCreate } from '../actions/StudentActions';
-class StudentCreate extends Component {
+import { studentChange,studentUpdate ,studentDelete} from '../actions/StudentActions';
+class StudentUpdate extends Component {
 
-    clickSave() {
+
+    state = {isim : ' ',soyisim: ' ' ,ogrencinumara: ' ',sube: ' '};
+    componentDidMount(){
         const {
             isim,
             soyisim,
             ogrencinumara,
             sube
-        } = this.props;
-        this.props.studentCreate({isim, soyisim, ogrencinumara, sube });
+        } = this.props.student;
+        this.setState( {isim,
+            soyisim,
+            ogrencinumara,
+            sube});
+    }
+
+    clickUpdate() {
+        const {
+            isim,
+            soyisim,
+            ogrencinumara,
+            sube
+        } = this.state;
+        this.props.studentUpdate({isim, soyisim, ogrencinumara, sube ,uid:this.props.student.uid });
+
+    }
+    clickDelete() {
+        this.props.studentDelete({uid: this.props.student.uid});
 
     }
     renderButton() {
         if (!this.props.loading) {
-          return     <Button onPress={this.clickSave.bind(this)}> KAYDET </Button>
+          return     <Button onPress={this.clickUpdate.bind(this)}> GUNCELLE </Button>
+        }
+        return <Spinner size="small" />;
+      }
+      renderDeleteButton() {
+        if (!this.props.loading) {
+          return     <Button onPress={this.clickDelete.bind(this)}> SİL </Button>
         }
         return <Spinner size="small" />;
       }
@@ -31,8 +56,8 @@ class StudentCreate extends Component {
                     <TextInput
                         placeholder="İsim"
                         style={inputStyle}
-                        value={this.props.isim}
-                        onChangeText={isim => this.props.studentChange({ props: 'isim', value: isim })}
+                        value={this.state.isim}
+                        onChangeText={isim => this.setState({ isim })}
                     />
                 </CardSection>
 
@@ -40,8 +65,8 @@ class StudentCreate extends Component {
                     <TextInput
                         placeholder="Soyisim"
                         style={inputStyle}
-                        value={this.props.soyisim}
-                        onChangeText={soyisim => this.props.studentChange({ props: 'soyisim', value: soyisim })}
+                        value={this.state.soyisim}
+                        onChangeText={soyisim => this.setState({  soyisim })}
                     />
                 </CardSection>
 
@@ -49,8 +74,8 @@ class StudentCreate extends Component {
                     <TextInput
                         placeholder="Öğrenci Numarası"
                         style={inputStyle}
-                        value={this.props.ogrencinumara}
-                        onChangeText={ogrencinumara => this.props.studentChange({ props: 'ogrencinumara', value: ogrencinumara })}
+                        value={this.state.ogrencinumara}
+                        onChangeText={ogrencinumara => this.setState({  ogrencinumara })}
                     />
                 </CardSection>
 
@@ -58,8 +83,8 @@ class StudentCreate extends Component {
                     <Text>Şube</Text>
                     <Picker
                         style={{ flex: 1 }}
-                        selectedValue={this.props.sube}
-                        onValueChange={sube => this.props.studentChange({ props: 'sube', value: sube })}
+                        selectedValue={this.state.sube}
+                        onValueChange={sube => this.setState({  sube })}
                     >
                         <Picker.Item label="A şubesi" value="asube" />
                         <Picker.Item label="B şubesi" value="bsube" />
@@ -73,6 +98,9 @@ class StudentCreate extends Component {
 
                 <CardSection>
                 {this.renderButton()}
+                </CardSection>
+                <CardSection>
+                {this.renderDeleteButton()}
                 </CardSection>
             </View>
 
@@ -90,21 +118,15 @@ const styles = {
 };
 const mapToStateProps = ({ studentListResponse }) => {
     const {
-        isim,
-        soyisim,
-        ogrencinumara,
-        sube,
+       
         loading
     } = studentListResponse;
 
     return {
-        isim,
-        soyisim,
-        ogrencinumara,
-        sube,
+       
         loading
     };
 
 }
 
-export default connect(mapToStateProps, { studentChange ,studentCreate})(StudentCreate);
+export default connect(mapToStateProps, { studentChange ,studentUpdate,studentDelete})(StudentUpdate);

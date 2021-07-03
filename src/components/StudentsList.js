@@ -1,40 +1,38 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { View, Text,ListView } from 'react-native';
+import { View, Text,FlatList } from 'react-native';
+import ListView from 'deprecated-react-native-listview';
 import { connect } from 'react-redux';
 import { StudentListData } from '../actions/StudentActions';
+import ListItem from './ListItem';
 
 
 class StudentsList extends Component {
-    componentDidMount(){
+    componentDidMount() {
         this.props.StudentListData();
-       
-    }
-    UNSAFE_componentWillReceiveProps(nextProps){
-        const ds = new ListView.DataSource({
-            rowHasChanged : (r1,r2) => r1 !== r2
-        })
+      
 
-        this.DataSource = ds.cloneWithRows(nextProps.studentsArray)
     }
-    render (){
-        return(
-            <View>
-                <Text> STUDENT 1</Text>
-                <Text> STUDENT 1</Text>
-                <Text> STUDENT 1</Text>
-                <Text> STUDENT 1</Text>
-                <Text> STUDENT 1</Text>
-            </View>
+    renderRow({ item, index }) {
+        return <ListItem ogrenci={item} />;
+      }
+      render() {
+        return (
+        <FlatList
+        data={this.props.studentsArray}
+        renderItem={this.renderRow}
+        keyExtractor={(item, index) => index.toString()}
+        />
+         
         );
-    }
-}
+        }
+        }
 
-const mapStateToProps  = ({ StudentDataResponse}) =>{
-    const studentsArray = _.map(StudentDataResponse.data, (val,uid) => {
-        return {...val, uid };
+const mapStateToProps = ({ StudentDataResponse }) => {
+    const studentsArray = _.map(StudentDataResponse, (val, uid) => {
+        return { ...val, uid };
     });
-    return studentsArray;
+    return { studentsArray };
 
 }
-export default  connect(mapStateToProps ,{StudentListData  }) (StudentsList);
+export default connect(mapStateToProps, { StudentListData })(StudentsList);
