@@ -48,7 +48,7 @@ class StudentUpdate extends Component {
         return <Spinner size="small" />;
       }
     render() {
-        console.log("gelen data here: " + this.props.student.isim);
+      //  console.log("gelen data here: " + this.props.student.isim);
         const { inputStyle } = styles;
         return (
             <View>
