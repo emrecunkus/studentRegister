@@ -40,6 +40,7 @@ export const loginUser = ({ email,password }) => {
                 { text: 'Tamam', onPress: () => null }
               ]
             );
+            
           }
           else{
             firebase.auth().signInWithEmailAndPassword(email, password)
@@ -56,6 +57,13 @@ export const loginUser = ({ email,password }) => {
     };
 };
 const loginFail = (dispatch) => {
+    Alert.alert(
+        'Mesaj',
+        'Kullanıcı bilgileri hatalı',
+        [
+          { text: 'Tamam', onPress: () => null }
+        ]
+      );
     dispatch({
         type: LOGIN_USER_FAIL,  
         
